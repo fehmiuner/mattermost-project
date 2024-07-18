@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    platform: linux/amd64
+    restart: always
+    environment:
+      POSTGRES_DB: mattermost
+      POSTGRES_USER: mmuser
+      POSTGRES_PASSWORD: mmuser_password
+
+    volumes:
+      - ./db-data:/var/lib/postgresql/data
+    networks:
+      - mattermost-project 
+
+  app:
+    image: mattermost/mattermost-team-edition:latest
+    platform: linux/amd64
+    restart: always
+    environment:
+      MM_SQLSETTINGS_DATASOURCE: postgres://mmuser:mmuser_password@db:5432/mattermost?sslmode=disable&connect_timeout=10
+      MM_FILESETTINGS_DRIVERNAME: amazons3
+      MM_FILESETTINGS_AMAZONS3ACCESSKEYID: minio
+      MM_FILESETTINGS_AMAZONS3SECRETACCESSKEY: minio123
+      MM_FILESETTINGS_AMAZONS3BUCKET: mattermost
+      MM_FILESETTINGS_AMAZONS3ENDPOINT: minio:9000
+      MM_FILESETTINGS_AMAZONS3SSL: "false"
+      MM_FILESETTINGS_AMAZONS3SIGNV2: "true"
+
+    volumes:
+      - ./mattermost-data:/mattermost/data
+      - ./mattermost-logs:/mattermost/logs
+      - ./mattermost-config:/mattermost/config
+    networks:
+      - mattermost-project 
+    ports:
+      - "8065:8065"
+    depends_on:
+      - db
+      - minio
+
+  minio:
+    image: minio/minio
+    platform: linux/amd64
+    restart: always
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+      MINIO_DEFAULT_BUCKETS: mattermost
+    volumes:
+      - minio-data:/data
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    command: server /data --console-address ":9001"
+    networks:
+      - mattermost-project 
+
+volumes:
+  minio-data:
+networks:
+  mattermost-project:
