@@ -192,6 +192,8 @@ Docker Compose dosyasında tanımladığınız ./plugins konumuna Mattermost ekl
 5. Mattermost Konfigürasyonu
 Tarayıcınızdan Mattermost'a erişin (localhost:8065).
 Yönetici olarak giriş yapın ve gerekli ayarları yapılandırın.
+
+
 Bu kılavuzu takip ederek Mattermost, MinIO, PostgreSQL ve OnlyOffice servislerini başarıyla kurabilir ve yapılandırabilirsiniz. Herhangi bir sorunuz olursa bana sormaktan çekinmeyin.
 
 
