@@ -12,8 +12,8 @@ Bu proje, Docker Compose kullanarak Mattermost, OnlyOffice, PostgreSQL ve MinIO 
 
 1. **Repository'i Klonlayın:**
     ```bash
-    git clone https://github.com/kullaniciadi/mattermost-projesi.git
-    cd mattermost-projesi
+    git clone https://github.com/fehmiuner/mattermost-project.git
+    cd mattermost-project
     ```
 
 2. **Servisleri Başlatın:**
